@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lupa Password - TokoFra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
+    body {
+      min-height:100vh;
+      background: radial-gradient(circle at top, #1d4ed8, #020617);
+      display:flex; align-items:center; justify-content:center;
+      color:#e5e7eb;
+    }
+    .card {
+      width: 380px;
+      max-width: 100%;
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      padding: 30px 26px 24px;
+      box-shadow: 0 25px 60px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+    .title { text-align:center; font-size:22px; margin-bottom:6px; }
+    .subtitle { text-align:center; font-size:13px; color:#9ca3af; margin-bottom:22px; }
+    .label { font-size:13px; margin-bottom:6px; display:block; }
+    .input {
+      width:100%; padding:10px 12px; border-radius:10px;
+      border:1px solid #020617; background:#020617; color:#e5e7eb;
+      font-size:13px; margin-bottom:14px;
+    }
+    .input:focus { outline:none; border-color:#3b82f6; }
+    .btn-primary {
+      width:100%; padding:10px 14px; border-radius:999px;
+      border:none; cursor:pointer; font-size:14px; color:#fff;
+      background: linear-gradient(135deg,#38bdf8,#2563eb);
+      margin-top:4px;
+    }
+    .info { font-size:12px; color:#9ca3af; margin-bottom:10px; }
+    .error { font-size:12px; color:#f97373; margin-bottom:8px; }
+    .success { font-size:12px; color:#4ade80; margin-bottom:8px; }
+    .link { color:#38bdf8; cursor:pointer; }
+    .brand {
+      text-align:center; font-weight:700; color:#e5e7eb;
+      letter-spacing:0.08em; margin-bottom:10px;
+    }
+    .brand span { color:#38bdf8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">Toko<span>Fra</span></div>
+    <h1 class="title">Lupa password</h1>
+    <p class="subtitle">
+      Ketik email yang sudah kamu daftarkan. Kami akan mengarahkanmu untuk verifikasi.
+    </p>
+
+    <div id="msgBox" class="info">
+      Setelah klik tombol, buka Gmail lalu masukkan kode verifikasi yang dikirim.
+    </div>
+
+    <div id="errorBox" class="error" style="display:none;"></div>
+    <div id="successBox" class="success" style="display:none;"></div>
+
+    <label class="label" for="email">Email terdaftar</label>
+    <input id="email" class="input" type="email" placeholder="email@kamu.com" />
+
+    <button class="btn-primary" onclick="handleForgot()">Kirim kode verifikasi</button>
+
+    <p style="margin-top:12px; font-size:12px; text-align:center;">
+      Sudah ingat password?
+      <span class="link" onclick="location.href='login.html'">Kembali ke login</span>
+    </p>
+  </div>
+
+  <script>
+    async function handleForgot() {
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const errorBox = document.getElementById("errorBox");
+      const successBox = document.getElementById("successBox");
+
+      errorBox.style.display = "none";
+      successBox.style.display = "none";
+
+      if (!email) {
+        errorBox.textContent = "Email wajib diisi.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      // cek apakah email terdaftar di localStorage
+      const usersRaw = localStorage.getItem("users") || "[]";
+      const users = JSON.parse(usersRaw);
+      const user = users.find(u => u.email === email);
+
+      if (!user) {
+        errorBox.textContent = "Email ini belum terdaftar. Silakan daftar akun baru.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      try {
+        // panggil server Node untuk kirim kode verifikasi
+        const res = await fetch("http://localhost:4000/send-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorBox.textContent = data.message || "Gagal mengirim kode verifikasi.";
+          errorBox.style.display = "block";
+          return;
+        }
+
+        // simpan email & kode untuk verifikasi dan reset password
+        localStorage.setItem("emailForReset", email);
+        localStorage.setItem("resetCode", data.code);
+        localStorage.removeItem("resetVerified"); // pastikan reset lama tidak kepakai
+
+        successBox.textContent =
+          "Kode verifikasi sudah dikirim ke Gmail " + email +
+          ". Silakan cek inbox/spam, lalu masukkan kode di halaman berikutnya.";
+        successBox.style.display = "block";
+
+        // pindah ke halaman input kode
+        setTimeout(() => {
+          window.location.href = "verify-code.html";
+        }, 1000);
+      } catch (err) {
+        errorBox.textContent = "Tidak bisa terhubung ke server. Pastikan server Node jalan di port 4000.";
+        errorBox.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

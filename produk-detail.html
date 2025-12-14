@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detail Produk - TokoKu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #020617; color: #e5e7eb; }
+    a { text-decoration: none; color: inherit; }
+
+    header { background: #020617; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1f2937; }
+    .logo { font-size: 20px; font-weight: bold; }
+    nav { display: flex; gap: 16px; font-size: 14px; }
+    nav a:hover { color: #38bdf8; }
+    .cart { font-size: 14px; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 28px; }
+    .image-box {
+      background: radial-gradient(circle at top, #1d4ed8,#020617);
+      border-radius: 18px; min-height: 260px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #cbd5f5; overflow: hidden;
+    }
+    .image-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      border-radius: 18px;
+      display: none;
+    }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    .price { font-size: 20px; color: #22c55e; font-weight: bold; margin-bottom: 8px; }
+    .short { font-size: 13px; color: #9ca3af; margin-bottom: 12px; }
+    .info-list { font-size: 12px; color: #9ca3af; margin-bottom: 16px; }
+    .info-list li { margin-bottom: 4px; }
+    .qty-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .qty-row input { width: 60px; padding: 6px; border-radius: 6px; border: 1px solid #334155; background: #0b1120; color: #e5e7eb; }
+    .btn-primary { background: #22c55e; border: none; padding: 9px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; color: #022c22; }
+    .btn-outline { background: transparent; border-radius: 999px; border: 1px solid #38bdf8; padding: 8px 14px; font-size: 12px; margin-left: 8px; cursor: pointer; color:#e5e7eb; }
+    .note { font-size: 11px; color: #9ca3af; margin-top: 8px; }
+
+    footer { border-top: 1px solid #1f2937; padding: 16px 24px; text-align: center; font-size: 11px; color: #6b7280; background: #020617; }
+
+    @media (max-width: 768px) {
+      main { padding: 18px 16px; grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <!-- Proteksi login -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "register.html";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo">TokoKu</div>
+    <nav>
+      <a href="index.html">Beranda</a>
+      <a href="produk.html">Produk</a>
+      <a href="pembayaran.html">Pembayaran</a>
+    </nav>
+    <div class="cart">🛒 <span id="cartCount">0</span></div>
+  </header>
+
+  <main>
+    <div class="image-box" id="imageBox">
+      <img id="prodImage" src="" alt="Gambar produk"
+           onerror="this.style.display='none'; document.getElementById('imageFallback').style.display='block';">
+      <span id="imageFallback">Detail Produk</span>
+    </div>
+    <div>
+      <h1 id="prodName">Nama Produk</h1>
+      <div class="price" id="prodPrice">Rp0</div>
+      <p class="short" id="prodShort">Deskripsi singkat produk akan tampil di sini.</p>
+
+      <ul class="info-list">
+        <li>Asal: Single origin pilihan.</li>
+        <li>Pengiriman: 1–2 hari kerja (kota besar).</li>
+        <li>Kemasan: Food grade, aman untuk dikirim jarak jauh.</li>
+      </ul>
+
+      <div class="qty-row">
+        <label for="qty">Jumlah:</label>
+        <input type="number" id="qty" min="1" value="1" />
+      </div>
+
+      <button class="btn-primary" onclick="goToPayment()">
+        Lanjut ke Pembayaran
+      </button>
+      <button class="btn-outline" onclick="location.href='produk.html'">
+        Kembali ke Halaman Produk
+      </button>
+
+      <p class="note">
+        Untuk saat ini, keranjang masih sederhana. Setelah memilih produk, kamu bisa lanjut ke halaman pembayaran dan isi detail order secara manual.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 TokoKu. Semua hak cipta dilindungi.
+  </footer>
+
+  <script>
+    const products = {
+      1: {
+        name: "Kopi Arabica Premium 250g",
+        price: 85000,
+        short: "Kopi arabica medium roast dengan aroma floral dan chocolatey.",
+        image: "Arabica.JPG"
+      },
+      2: {
+        name: "Teh Hijau Organik 50 Sachet",
+        price: 65000,
+        short: "Teh hijau organik ringan, cocok diminum pagi dan malam.",
+        image: "teh hijau.jpg"
+      },
+      3: {
+        name: "Homemade Coffee Creamer",
+        price: 120000,
+        short: "Minyak zaitun extra virgin dengan rasa lembut untuk salad dan masakan.",
+        image: "Homemade Coffee Creamer.jpg"
+      },
+      4: {
+        name: "three shot",
+        price: 20000,
+        short: "Dengan biji kopi pilihan yang di olah langsung dengan sejuta kenangan.",
+        image: "three shot.jpg"
+      },
+      5: {
+        name: "Kopi Robusta Signature 250g",
+        price: 75000,
+        short: "Madu hutan murni dengan rasa manis alami dan aroma khas.",
+        image: "Kopi Robusta Signature 250g.jpg"
+      },
+      6: {
+        name: "Drip Coffee Bag (10 sachet)",
+        price: 55000,
+        short: "Kopi praktis, tinggal seduh tanpa alat tambahan.",
+        image: "Drip Coffee Bag.jpg"
+      },
+      7: {
+        name: "Teh Hitam Premium 50 Sachet",
+        price: 55000,
+        short: "Aroma kuat",
+        image: "Teh Hitam Premium.jpg"
+      },
+      8: {
+        name: "Teh Chamomile Relax 25 Sachet",
+        price: 48000,
+        short: "Teh herbal menenangkan untuk malam hari.",
+        image: "Teh Chamomile Relax 25 Sachet.jpg"
+      },
+    };
+
+    function formatRupiah(num) {
+      return "Rp" + num.toLocaleString("id-ID");
+    }
+
+    function getIdFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id") || "1";
+    }
+
+    const id = getIdFromQuery();
+    const p  = products[id];
+
+    if (p) {
+      document.getElementById("prodName").textContent  = p.name;
+      document.getElementById("prodPrice").textContent = formatRupiah(p.price);
+      document.getElementById("prodShort").textContent = p.short;
+
+      const img = document.getElementById("prodImage");
+      const fb  = document.getElementById("imageFallback");
+
+      if (p.image) {
+        img.src = p.image;
+        img.style.display = "block";
+        fb.style.display  = "none";
+      } else {
+        img.style.display = "none";
+        fb.textContent    = p.name;
+        fb.style.display  = "block";
+      }
+    }
+
+    document.getElementById("cartCount").textContent = 0;
+
+    // kirim produk + qty ke halaman pembayaran
+    function goToPayment() {
+      if (!p) return;
+
+      const qty = parseInt(document.getElementById("qty").value || "1", 10);
+
+      const orderItem = {
+        id: id,
+        name: p.name,
+        price: p.price,
+        qty: qty
+      };
+
+      localStorage.setItem("currentOrderItem", JSON.stringify(orderItem));
+      window.location.href = "pembayaran.html";
+    }
+  </script>
+</body>
+</html>

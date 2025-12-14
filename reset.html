@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reset Password - TokoFra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
+    body {
+      min-height:100vh;
+      background: radial-gradient(circle at top, #1d4ed8, #020617);
+      display:flex; align-items:center; justify-content:center;
+      color:#e5e7eb;
+    }
+    .card {
+      width: 380px;
+      max-width: 100%;
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      padding: 30px 26px 24px;
+      box-shadow: 0 25px 60px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+    .title { text-align:center; font-size:22px; margin-bottom:6px; }
+    .subtitle { text-align:center; font-size:13px; color:#9ca3af; margin-bottom:22px; }
+    .label { font-size:13px; margin-bottom:6px; display:block; }
+    .input {
+      width:100%; padding:10px 12px; border-radius:10px;
+      border:1px solid #020617; background:#020617; color:#e5e7eb;
+      font-size:13px; margin-bottom:14px;
+    }
+    .input:focus { outline:none; border-color:#3b82f6; }
+    .btn-primary {
+      width:100%; padding:10px 14px; border-radius:999px;
+      border:none; cursor:pointer; font-size:14px; color:#fff;
+      background: linear-gradient(135deg,#38bdf8,#2563eb);
+      margin-top:4px;
+    }
+    .error { font-size:12px; color:#f97373; margin-bottom:8px; }
+    .success { font-size:12px; color:#4ade80; margin-bottom:8px; }
+    .link { color:#38bdf8; cursor:pointer; }
+    .brand {
+      text-align:center; font-weight:700; color:#e5e7eb;
+      letter-spacing:0.08em; margin-bottom:10px;
+    }
+    .brand span { color:#38bdf8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">Toko<span>Fra</span></div>
+    <h1 class="title">Buat password baru</h1>
+    <p class="subtitle" id="subtitleText">
+      Masukkan password baru untuk akun kamu.
+    </p>
+
+    <div id="errorBox" class="error" style="display:none;"></div>
+    <div id="successBox" class="success" style="display:none;"></div>
+
+    <label class="label" for="password">Password baru</label>
+    <input id="password" class="input" type="password" placeholder="Password baru" />
+
+    <label class="label" for="password2">Ulangi password baru</label>
+    <input id="password2" class="input" type="password" placeholder="Ulangi password baru" />
+
+    <button class="btn-primary" onclick="handleReset()">Simpan password baru</button>
+
+    <p style="margin-top:12px; font-size:12px; text-align:center;">
+      Kembali ke
+      <span class="link" onclick="location.href='login.html'">halaman login</span>
+    </p>
+  </div>
+
+  <script>
+    // hanya boleh masuk kalau sudah verifikasi kode
+    const resetVerified = localStorage.getItem("resetVerified");
+    const resetEmail = localStorage.getItem("emailForReset");
+    const subtitle = document.getElementById("subtitleText");
+
+    if (resetVerified !== "true" || !resetEmail) {
+      // kalau belum lewat verifikasi / email tidak ada → kembali ke lupa password
+      window.location.href = "forgot.html";
+    } else {
+      subtitle.textContent =
+        "Buat password baru untuk akun: " + resetEmail + ".";
+    }
+
+    function handleReset() {
+      const errorBox = document.getElementById("errorBox");
+      const successBox = document.getElementById("successBox");
+      errorBox.style.display = "none";
+      successBox.style.display = "none";
+
+      if (!resetEmail) {
+        errorBox.textContent = "Email reset tidak ditemukan. Lakukan proses lupa password lagi.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      const pass  = document.getElementById("password").value;
+      const pass2 = document.getElementById("password2").value;
+
+      if (!pass || !pass2) {
+        errorBox.textContent = "Password baru dan ulangi password wajib diisi.";
+        errorBox.style.display = "block";
+        return;
+      }
+      if (pass !== pass2) {
+        errorBox.textContent = "Password baru dan ulangi password tidak sama.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      const usersRaw = localStorage.getItem("users") || "[]";
+      const users = JSON.parse(usersRaw);
+      const idx = users.findIndex(u => u.email === resetEmail);
+
+      if (idx === -1) {
+        errorBox.textContent = "Akun dengan email ini tidak ditemukan.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      // simpan password baru
+      users[idx].password = pass;
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // bersihkan semua data reset
+      localStorage.removeItem("resetEmail");
+      localStorage.removeItem("emailForReset");
+      localStorage.removeItem("resetCode");
+      localStorage.removeItem("resetVerified");
+
+      successBox.textContent = "Password berhasil diubah. Silakan login dengan password baru.";
+      successBox.style.display = "block";
+
+      // optional: otomatis ke login setelah beberapa detik
+      setTimeout(() => {
+        location.href = "login.html";
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

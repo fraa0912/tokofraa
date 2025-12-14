@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Produk - TokoFra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #0b1120; color: #e5e7eb; }
+    a { text-decoration: none; color: inherit; }
+
+    header { background: #020617; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1f2937; }
+    .logo { font-size: 20px; font-weight: bold; }
+    nav { display: flex; gap: 16px; font-size: 14px; }
+    nav a { padding-bottom: 2px; }
+    nav a:hover { color: #38bdf8; }
+    .cart { font-size: 14px; }
+
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .sub { font-size: 12px; color: #9ca3af; margin-bottom: 18px; }
+
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; }
+    .product-card { background: #020617; border-radius: 14px; padding: 12px; border: 1px solid #1e293b; transition: transform 0.15s, border-color 0.15s; }
+    .product-card:hover { transform: translateY(-3px); border-color: #38bdf8; }
+    .product-image { background: linear-gradient(135deg,#1e293b,#020617); border-radius: 10px; height: 140px; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 13px; margin-bottom: 10px; }
+    .product-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .product-desc { font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
+    .product-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+    .product-price { color: #22c55e; font-weight: bold; }
+    .btn-mini { margin-top: 8px; display: inline-block; font-size: 11px; padding: 6px 10px; border-radius: 999px; border: 1px solid #38bdf8; }
+
+    footer { border-top: 1px solid #1f2937; padding: 16px 24px; text-align: center; font-size: 11px; color: #6b7280; background: #020617; }
+
+    @media (max-width: 768px) {
+      header { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
+      main { padding: 18px 16px; }
+    }
+  </style>
+
+  <!-- Proteksi login -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "register.html";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo">TokoFra</div>
+    <nav>
+      <a href="index.html">Beranda</a>
+      <a href="produk.html">Produk</a>
+      <a href="pembayaran.html">Pembayaran</a>
+    </nav>
+    <div class="cart">🛒 <span id="cartCount">0</span></div>
+  </header>
+
+  <main>
+    <h1>Semua Produk</h1>
+    <p class="sub">Pilih produk yang kamu suka, lalu lanjutkan ke halaman pembayaran.</p>
+
+     <div class="products-grid">
+    <!-- 1 -->
+    <a href="produk-detail.html?id=1" class="product-card">
+      <div class="product-image">
+        <img src="Arabica.jpg" alt="Kopi Arabica Premium"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Kopi Arabica Premium 250g</div>
+      <div class="product-desc">Kopi pilihan dengan cita rasa khas, cocok untuk pecinta kopi.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp85.000</span>
+        <span>Stok terbatas</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=2" class="product-card">
+      <div class="product-image">
+        <img src="teh hijau.jpg" alt="Teh Hijau Organik"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Teh Hijau Organik 50 Sachet</div>
+      <div class="product-desc">Teh hijau organik untuk gaya hidup sehat sehari-hari.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp65.000</span>
+        <span>Bebas gula</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=3" class="product-card">
+      <div class="product-image">
+        <img src="Homemade Coffee Creamer.jpg" alt="Homemade Coffee Creamer"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Homemade Coffee Creamer</div>
+      <div class="product-desc">Homemade Coffee Creamer</div>
+      <div class="product-meta">
+        <span class="product-price">Rp120.000</span>
+        <span>Isi 500ml</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=4" class="product-card">
+      <div class="product-image">
+        <img src="three shot.jpg" alt="Madu Hutan Murni"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Three Shot</div>
+      <div class="product-desc">Dengan biji kopi pilihan yang di olah langsung dengan sejuta kenangan.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp20.000</span>
+        <span>Asli hutan</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=5" class="product-card">
+      <div class="product-image">
+        <img src="Kopi Robusta Signature 250g.jpg" alt="Kopi Robusta Signature"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Kopi Robusta Signature 250g</div>
+      <div class="product-desc">Robusta dengan body kuat dan aftertaste cokelat.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp75.000</span>
+        <span>Blend rumah</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=6" class="product-card">
+      <div class="product-image">
+        <img src="Drip Coffee Bag.jpg" alt="Drip Coffee Bag"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Drip Coffee Bag (10 sachet)</div>
+      <div class="product-desc">Kopi praktis, tinggal seduh tanpa alat tambahan.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp55.000</span>
+        <span>Praktis</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=7" class="product-card">
+      <div class="product-image">
+        <img src="Teh Hitam Premium.jpg" alt="Teh Hitam Premium"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Teh Hitam Premium 50 Sachet</div>
+      <div class="product-desc">Teh hitam beraroma kuat untuk pagi hari.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp60.000</span>
+        <span>Aroma kuat</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <a href="produk-detail.html?id=8" class="product-card">
+      <div class="product-image">
+        <img src="Teh Chamomile Relax 25 Sachet.jpg" alt="Teh Chamomile"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Teh Chamomile Relax 25 Sachet</div>
+      <div class="product-desc">Teh herbal menenangkan untuk malam hari.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp48.000</span>
+        <span>Non-kafein</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 9 -->
+    <a href="produk-detail.html?id=9" class="product-card">
+      <div class="product-image">
+        <img src="img/cokelat-bubuk.jpg" alt="Cokelat Bubuk"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Cokelat Bubuk Premium 250g</div>
+      <div class="product-desc">Cokelat bubuk untuk minuman hangat dan baking.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp70.000</span>
+        <span>Tanpa pewarna</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 10 -->
+    <a href="produk-detail.html?id=10" class="product-card">
+      <div class="product-image">
+        <img src="img/gula-aren.jpg" alt="Gula Aren Cair"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Gula Aren Cair 350ml</div>
+      <div class="product-desc">Pemanis alami untuk kopi susu dan teh.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp40.000</span>
+        <span>Alami</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 11 -->
+    <a href="produk-detail.html?id=11" class="product-card">
+      <div class="product-image">
+        <img src="img/susu-almond.jpg" alt="Susu Almond"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Susu Almond Unsweetened 1L</div>
+      <div class="product-desc">Alternatif susu rendah kalori untuk kopi.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp52.000</span>
+        <span>Vegan</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 12 -->
+    <a href="produk-detail.html?id=12" class="product-card">
+      <div class="product-image">
+        <img src="img/susu-oat.jpg" alt="Susu Oat"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Susu Oat Barista 1L</div>
+      <div class="product-desc">Tekstur creamy, cocok untuk latte art.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp58.000</span>
+        <span>Barista series</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 13 -->
+    <a href="produk-detail.html?id=13" class="product-card">
+      <div class="product-image">
+        <img src="img/honey-stick.jpg" alt="Honey Stick"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Honey Stick 20 pcs</div>
+      <div class="product-desc">Madu dalam kemasan stik praktis untuk sekali pakai.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp38.000</span>
+        <span>On-the-go</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 14 -->
+    <a href="produk-detail.html?id=14" class="product-card">
+      <div class="product-image">
+        <img src="img/lemon-kering.jpg" alt="Irisan Lemon Kering"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Irisan Lemon Kering 100g</div>
+      <div class="product-desc">Pelengkap teh atau infused water.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp45.000</span>
+        <span>Tanpa gula</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 15 -->
+    <a href="produk-detail.html?id=15" class="product-card">
+      <div class="product-image">
+        <img src="img/jahe-merah.jpg" alt="Serbuk Jahe Merah"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Serbuk Jahe Merah 200g</div>
+      <div class="product-desc">Minuman hangat untuk daya tahan tubuh.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp50.000</span>
+        <span>Tanpa pengawet</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 16 -->
+    <a href="produk-detail.html?id=16" class="product-card">
+      <div class="product-image">
+        <img src="img/kopi-decaf.jpg" alt="Kopi Decaf"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Kopi Decaf 250g</div>
+      <div class="product-desc">Kopi rendah kafein, aman diminum malam hari.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp90.000</span>
+        <span>Decaf</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 17 -->
+    <a href="produk-detail.html?id=17" class="product-card">
+      <div class="product-image">
+        <img src="img/vanilla-syrup.jpg" alt="Sirup Vanilla"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Sirup Vanilla 500ml</div>
+      <div class="product-desc">Pemanis rasa vanilla untuk kopi susu.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp60.000</span>
+        <span>Favorit cafe</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 18 -->
+    <a href="produk-detail.html?id=18" class="product-card">
+      <div class="product-image">
+        <img src="img/caramel-syrup.jpg" alt="Sirup Caramel"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Sirup Caramel 500ml</div>
+      <div class="product-desc">Rasa karamel untuk latte dan frappé.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp60.000</span>
+        <span>Signature</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 19 -->
+    <a href="produk-detail.html?id=19" class="product-card">
+      <div class="product-image">
+        <img src="img/gelas-kaca.jpg" alt="Gelas Kaca"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Gelas Kaca Double Wall</div>
+      <div class="product-desc">Gelas tahan panas untuk kopi dan teh.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp85.000</span>
+        <span>350ml</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 20 -->
+    <a href="produk-detail.html?id=20" class="product-card">
+      <div class="product-image">
+        <img src="img/french-press.jpg" alt="French Press"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">French Press 600ml</div>
+      <div class="product-desc">Alat seduh manual untuk kopi press.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp180.000</span>
+        <span>Stainless</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 21 -->
+    <a href="produk-detail.html?id=21" class="product-card">
+      <div class="product-image">
+        <img src="img/v60.jpg" alt="V60 Dripper"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">V60 Dripper Size 02</div>
+      <div class="product-desc">Alat pour over untuk seduhan kopi clean.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp150.000</span>
+        <span>Ceramic</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 22 -->
+    <a href="produk-detail.html?id=22" class="product-card">
+      <div class="product-image">
+        <img src="img/filter-v60.jpg" alt="Filter Kertas V60"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Filter Kertas V60 (100 pcs)</div>
+      <div class="product-desc">Kertas filter untuk pour over V60.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp45.000</span>
+        <span>Size 02</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+
+    <!-- 23 -->
+    <a href="produk-detail.html?id=23" class="product-card">
+      <div class="product-image">
+        <img src="img/timbangan-kopi.jpg" alt="Timbangan Kopi Digital"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Timbangan Kopi Digital</div>
+      <div class="product-desc">Timbangan presisi dengan timer untuk brewing.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp210.000</span>
+        <span>Presisi 0,1g</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+    <a href="produk-detail.html?id=24" class="product-card">
+      <div class="product-image">
+        <img src="img/filter-v60.jpg" alt="Filter Kertas V60"
+             style="max-width:100%; max-height:100%; object-fit:cover; border-radius:10px;">
+      </div>
+      <div class="product-title">Cappucino susu</div>
+      <div class="product-desc">Kertas filter untuk pour over V60.</div>
+      <div class="product-meta">
+        <span class="product-price">Rp45.000</span>
+        <span>Bermuda</span>
+      </div>
+      <span class="btn-mini">Lihat Detail</span>
+    </a>
+  </main>
+
+  <footer>
+    &copy; 2025 TokoKu. Semua hak cipta dilindungi.
+  </footer>
+
+  <script>
+    document.getElementById('cartCount').textContent = 0;
+  </script>
+</body>
+</html>

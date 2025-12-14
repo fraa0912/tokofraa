@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pembayaran - TokoKu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #020617; color: #e5e7eb; }
+    a { text-decoration: none; color: inherit; }
+
+    header { background: #020617; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1f2937; }
+    .logo { font-size: 20px; font-weight: bold; }
+    nav { display: flex; gap: 16px; font-size: 14px; }
+    nav a:hover { color: #38bdf8; }
+    .cart { font-size: 14px; }
+
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: 24px; }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .sub { font-size: 12px; color: #9ca3af; margin-bottom: 18px; }
+
+    .card { background: #020617; border-radius: 14px; padding: 16px; border: 1px solid #1e293b; margin-bottom: 12px; }
+    .card h2 { font-size: 16px; margin-bottom: 10px; }
+
+    label { font-size: 12px; display: block; margin-bottom: 4px; color: #cbd5f5; }
+    input, textarea, select {
+      width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #334155;
+      background: #020617; color: #e5e7eb; font-size: 13px; margin-bottom: 10px;
+    }
+    textarea { resize: vertical; min-height: 70px; }
+
+    .row-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+
+    .methods { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .method {
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px;
+      border-radius: 10px; border: 1px solid #1e293b; cursor: pointer; font-size: 12px;
+    }
+    .method input { width: auto; margin-top: 3px; }
+    .method.active { border-color: #38bdf8; background: #020617; }
+
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; }
+    .summary-row.total { margin-top: 8px; font-weight: bold; font-size: 14px; }
+    .note { font-size: 11px; color: #9ca3af; margin-top: 6px; }
+
+    .btn-primary { background: #22c55e; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; color: #022c22; margin-top: 8px; width: 100%; }
+    .btn-secondary { background: transparent; border-radius: 999px; border: 1px solid #38bdf8; padding: 8px 14px; font-size: 12px; margin-top: 8px; width: 100%; color: #e5e7eb; }
+
+    footer { border-top: 1px solid #1f2937; padding: 16px 24px; text-align: center; font-size: 11px; color: #6b7280; background: #020617; }
+
+    @media (max-width: 900px) {
+      main { padding: 18px 16px; grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <!-- Proteksi login -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "register.html";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo">TokoKu</div>
+    <nav>
+      <a href="index.html">Beranda</a>
+      <a href="produk.html">Produk</a>
+      <a href="pembayaran.html">Pembayaran</a>
+    </nav>
+    <div class="cart">🛒 <span id="cartCount">0</span></div>
+  </header>
+
+  <main>
+    <section>
+      <h1>Pembayaran</h1>
+      <p class="sub">Isi data pengiriman dan pilih metode pembayaran yang kamu inginkan.</p>
+
+      <!-- FORM ORDER -->
+      <form id="orderForm">
+        <div class="card">
+          <h2>Data Pengiriman</h2>
+          <div class="row-2">
+            <div>
+              <label>Nama lengkap</label>
+              <input type="text" name="nama_penerima" placeholder="Nama penerima" />
+            </div>
+            <div>
+              <label>Nomor WhatsApp</label>
+              <input type="text" name="no_wa" placeholder="08xxxxxxxxxx" />
+            </div>
+          </div>
+
+          <label>Alamat lengkap</label>
+          <textarea name="alamat" placeholder="Nama jalan, nomor rumah, RT/RW, patokan..."></textarea>
+
+          <div class="row-2">
+            <div>
+              <label>Kota/Kabupaten</label>
+              <input type="text" name="kota" placeholder="Contoh: Jakarta Selatan" />
+            </div>
+            <div>
+              <label>Kode Pos</label>
+              <input type="text" name="kode_pos" placeholder="Kode pos" />
+            </div>
+          </div>
+
+          <label>Catatan untuk penjual (opsional)</label>
+          <textarea name="catatan" placeholder="Contoh: tolong kirim sore hari, atau tanpa plastik tambahan."></textarea>
+        </div>
+
+        <div class="card">
+          <h2>Metode Pembayaran</h2>
+          <div class="methods">
+            <label class="method active">
+              <input type="radio" name="metode_bayar" value="transfer_bank" checked />
+              <div>
+                <strong>Transfer Bank</strong><br/>
+                <span>Transfer ke rekening BCA/BRI/BNI. Setelah checkout, kamu akan mendapatkan nomor rekening dan instruksi konfirmasi pembayaran.</span>
+              </div>
+            </label>
+
+            <label class="method">
+              <input type="radio" name="metode_bayar" value="e_wallet" />
+              <div>
+                <strong>E-Wallet (OVO, Dana, GoPay)</strong><br/>
+                <span>Pembayaran cepat via QRIS atau nomor e-wallet. Bukti akan dicek otomatis dalam beberapa menit.</span>
+              </div>
+            </label>
+
+            <label class="method">
+              <input type="radio" name="metode_bayar" value="cod" />
+              <div>
+                <strong>COD (Bayar di Tempat)</strong><br/>
+                <span>Bayar langsung ke kurir ketika pesanan sampai. Berlaku untuk area tertentu saja.</span>
+              </div>
+            </label>
+          </div>
+
+          <p class="note">
+            Ini masih contoh statis. Untuk pembayaran sungguhan, perlu integrasi ke payment gateway.
+          </p>
+        </div>
+      </form>
+    </section>
+
+    <aside>
+      <div class="card">
+        <h2>Ringkasan Pesanan</h2>
+
+        <!-- baris item akan diisi via JS -->
+        <div id="summaryItems"></div>
+
+        <div class="summary-row">
+          <span>Ongkir (estimasi)</span>
+          <span id="ongkirText">Rp15.000</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="totalText">Rp0</span>
+        </div>
+        <!-- total numeric untuk dikirim ke backend -->
+        <input type="hidden" id="totalField" value="0" />
+
+        <p class="note">
+          Jumlah di atas dihitung dari produk yang kamu pilih dan ongkir estimasi.
+        </p>
+
+        <button class="btn-primary" id="btnOrder">
+          Buat Pesanan
+        </button>
+        <button class="btn-secondary" onclick="location.href='produk.html'">
+          Kembali ke Halaman Produk
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    &copy; 2025 TokoKu. Semua hak cipta dilindungi.
+  </footer>
+
+  <script>
+    document.getElementById('cartCount').textContent = 0;
+
+    const methodEls = document.querySelectorAll('.method');
+    methodEls.forEach(m => {
+      m.addEventListener('click', () => {
+        methodEls.forEach(mm => mm.classList.remove('active'));
+        m.classList.add('active');
+        const input = m.querySelector('input[type="radio"]');
+        if (input) input.checked = true;
+      });
+    });
+
+    // ---------- Ringkasan dinamis ----------
+    function formatRupiah(num) {
+      return "Rp" + num.toLocaleString("id-ID");
+    }
+
+    function loadSummary() {
+      const data = localStorage.getItem("currentOrderItem");
+      const summaryWrap = document.getElementById("summaryItems");
+      const totalField  = document.getElementById("totalField");
+      const totalText   = document.getElementById("totalText");
+
+      summaryWrap.innerHTML = "";
+
+      let subtotal = 0;
+      const ongkir = 15000;
+
+      if (data) {
+        const item = JSON.parse(data);
+        const itemTotal = item.price * item.qty;
+        subtotal = itemTotal;
+
+        const row = document.createElement("div");
+        row.className = "summary-row";
+        row.innerHTML = `
+          <span>${item.name} x${item.qty}</span>
+          <span>${formatRupiah(itemTotal)}</span>
+        `;
+        summaryWrap.appendChild(row);
+      } else {
+        const row = document.createElement("div");
+        row.className = "summary-row";
+        row.innerHTML = `<span>Tidak ada produk dipilih</span><span>-</span>`;
+        summaryWrap.appendChild(row);
+      }
+
+      const total = subtotal + ongkir;
+      totalField.value = total;
+      totalText.textContent = formatRupiah(total);
+    }
+
+    loadSummary();
+    // --------------------------------------
+
+    const orderForm = document.getElementById('orderForm');
+    const btnOrder  = document.getElementById('btnOrder');
+
+    btnOrder.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(orderForm);
+      formData.append('total', document.getElementById('totalField').value);
+
+      fetch('api_order.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Terima kasih, pesananmu tersimpan dengan ID: ' + data.order_id);
+          window.location.href = 'index.html';
+        } else {
+          alert('Gagal membuat pesanan: ' + (data.message || 'Terjadi kesalahan'));
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan jaringan.');
+      });
+    });
+  </script>
+</body>
+</html>

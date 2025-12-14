@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daftar - Toko Fra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
+    body {
+      min-height:100vh;
+      background: radial-gradient(circle at top, #1d4ed8, #020617);
+      display:flex; align-items:center; justify-content:center;
+      color:#e5e7eb;
+    }
+    .card {
+      width: 420px;
+      max-width: 100%;
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      padding: 32px 28px 26px;
+      box-shadow: 0 25px 60px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+    .title {
+      text-align:center;
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      text-align:center;
+      font-size: 13px;
+      color:#9ca3af;
+      margin-bottom: 22px;
+    }
+    .label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      display:block;
+    }
+    .input {
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border:1px solid #020617;
+      background:#020617;
+      color:#e5e7eb;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .input:focus {
+      outline:none;
+      border-color:#3b82f6;
+    }
+    .btn-primary {
+      width:100%;
+      padding: 10px 14px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size: 14px;
+      color:#fff;
+      background: linear-gradient(135deg,#38bdf8,#2563eb);
+      margin-top: 4px;
+    }
+    .bottom-text {
+      margin-top: 12px;
+      text-align:center;
+      font-size: 12px;
+      color:#9ca3af;
+    }
+    .link {
+      color:#38bdf8;
+      cursor:pointer;
+    }
+    .error {
+      font-size: 12px;
+      color:#f97373;
+      margin-bottom: 8px;
+    }
+    .brand {
+      text-align:center;
+      font-weight:700;
+      color:#e5e7eb;
+      letter-spacing:0.08em;
+      margin-bottom: 10px;
+    }
+    .brand span { color:#38bdf8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">Toko<span>Fra</span></div>
+    <h1 class="title">Pendaftaran Akun</h1>
+    <p class="subtitle">
+    Daftar sekali,nikmati belanja yang lebih cepat dan mudah🛒</p>
+
+    <div id="errorBox" class="error" style="display:none;"></div>
+
+    <label class="label" for="name">Nama lengkap</label>
+    <input id="name" class="input" placeholder="Nama kamu" />
+
+    <label class="label" for="email">Email</label>
+    <input id="email" class="input" type="email" placeholder="email@kamu.com" />
+
+    <label class="label" for="password">Password</label>
+    <input id="password" class="input" type="password" placeholder="••••••••" />
+
+    <label class="label" for="password2">Ulangi Password</label>
+    <input id="password2" class="input" type="password" placeholder="Ulangi password" />
+
+    <button class="btn-primary" onclick="handleRegister()">Buat Akun</button>
+
+    <div class="bottom-text">
+      Sudah punya akun?
+      <span class="link" onclick="location.href='login.html'">Masuk di sini</span>
+    </div>
+  </div>
+
+  <script>
+    // Kalau sudah login, langsung ke beranda
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      window.location.href = "index.html";
+    }
+
+    function handleRegister() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const pass = document.getElementById("password").value;
+      const pass2 = document.getElementById("password2").value;
+      const errorBox = document.getElementById("errorBox");
+
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
+
+      if (!name || !email || !pass || !pass2) {
+        errorBox.textContent = "Semua kolom wajib diisi.";
+        errorBox.style.display = "block";
+        return;
+      }
+      if (pass !== pass2) {
+        errorBox.textContent = "Password dan ulangi password tidak sama.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      // cek apakah email sudah pernah terdaftar
+      const usersRaw = localStorage.getItem("users") || "[]";
+      const users = JSON.parse(usersRaw);
+      const existing = users.find(u => u.email === email);
+      if (existing) {
+        errorBox.textContent = "Email ini sudah terdaftar. Silakan login.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      // simpan user baru
+      users.push({
+        name: name,
+        email: email,
+        password: pass
+      });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // sekaligus login
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userEmail", email);
+
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

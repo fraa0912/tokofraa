@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verifikasi Kode - TokoFra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; font-family: Arial, sans-serif; }
+    body {
+      min-height:100vh;
+      background: radial-gradient(circle at top, #1d4ed8, #020617);
+      display:flex; align-items:center; justify-content:center;
+      color:#e5e7eb;
+    }
+    .card {
+      width: 380px;
+      max-width: 100%;
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      padding: 30px 26px 24px;
+      box-shadow: 0 25px 60px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+    .title { text-align:center; font-size:22px; margin-bottom:6px; }
+    .subtitle { text-align:center; font-size:13px; color:#9ca3af; margin-bottom:22px; }
+    .label { font-size:13px; margin-bottom:6px; display:block; }
+    .input {
+      width:100%; padding:10px 12px; border-radius:10px;
+      border:1px solid #020617; background:#020617; color:#e5e7eb;
+      font-size:13px; margin-bottom:14px;
+      text-align:center; letter-spacing:4px;
+    }
+    .input:focus { outline:none; border-color:#3b82f6; }
+    .btn-primary {
+      width:100%; padding:10px 14px; border-radius:999px;
+      border:none; cursor:pointer; font-size:14px; color:#fff;
+      background: linear-gradient(135deg,#38bdf8,#2563eb);
+      margin-top:4px;
+    }
+    .error { font-size:12px; color:#f97373; margin-bottom:8px; }
+    .success { font-size:12px; color:#4ade80; margin-bottom:8px; }
+    .link { color:#38bdf8; cursor:pointer; }
+    .brand {
+      text-align:center; font-weight:700; color:#e5e7eb;
+      letter-spacing:0.08em; margin-bottom:10px;
+    }
+    .brand span { color:#38bdf8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">Toko<span>Fra</span></div>
+    <h1 class="title">Masukkan kode</h1>
+    <p class="subtitle" id="subtitleText">
+      Silahkan email kamu, lalu masukkan 6 digit kode verifikasi di bawah ini.
+    </p>
+
+    <div id="errorBox" class="error" style="display:none;"></div>
+    <div id="successBox" class="success" style="display:none;"></div>
+
+    <label class="label" for="code">Kode verifikasi</label>
+    <input id="code" class="input" maxlength="6" placeholder="••••••" />
+
+    <button class="btn-primary" onclick="verifyCode()">Verifikasi Kode</button>
+
+    <p style="margin-top:12px; font-size:12px; text-align:center;">
+      Tidak menerima kode?
+      <span class="link" onclick="location.href='forgot.html'">Kirim ulang</span>
+    </p>
+  </div>
+
+  <script>
+    // tampilkan email yang sedang di-reset
+    const emailForReset = localStorage.getItem("emailForReset");
+    const subtitle = document.getElementById("subtitleText");
+    if (emailForReset) {
+      subtitle.textContent = "Masukkan 6 digit kode yang dikirim ke: " + emailForReset;
+    }
+
+    function verifyCode() {
+      const inputCode = document.getElementById("code").value.trim();
+      const savedCode = localStorage.getItem("resetCode"); // dari server
+      const errorBox = document.getElementById("errorBox");
+      const successBox = document.getElementById("successBox");
+
+      errorBox.style.display = "none";
+      successBox.style.display = "none";
+
+      if (!inputCode) {
+        errorBox.textContent = "Kode verifikasi wajib diisi.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      if (!savedCode) {
+        errorBox.textContent = "Kode verifikasi tidak ditemukan. Silakan kirim ulang di halaman lupa password.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      if (inputCode !== savedCode) {
+        errorBox.textContent = "Kode verifikasi salah. Pastikan sesuai dengan yang di email.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      // kode benar → izinkan buat password baru
+      successBox.textContent = "Kode benar. Silakan buat password baru.";
+      successBox.style.display = "block";
+
+      // tandai bahwa verifikasi sukses
+      localStorage.setItem("resetVerified", "true");
+
+      // redirect ke halaman buat password baru
+      setTimeout(() => {
+        location.href = "reset.html";
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
